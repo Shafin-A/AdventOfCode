@@ -29,7 +29,6 @@ def num_passwords_p2(min, max):
         if len(string_int) > 6:
             continue
         
-        matchings = True
         doubles = False
         increase = True
         matchings = {}
