@@ -14,7 +14,7 @@ def param_mode(input_list, ABCDE, idx):
     param1 = input_list[idx + 1] if ABCDE[1] == 0 else (idx+1)
     param2 = input_list[idx + 2] if ABCDE[2] == 0 else (idx+2)
 
-    return param1, param2,
+    return param1, param2
 
 def compute(input_list):
     i = 0
