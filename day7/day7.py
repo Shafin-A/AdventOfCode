@@ -8,7 +8,7 @@ input_list = list(map(int, input_list))
 class IntCode:
     def __init__(self, program, input_code=None):
         self.ip = 0
-        self.program = program
+        self.program = program.copy()
         self.halted = False
         self.input_code = input_code
         
@@ -92,11 +92,11 @@ def amplifiers():
     outputs = []
     
     for phases in itertools.permutations([0, 1, 2, 3, 4]):
-        A = IntCode(input_list.copy(), [phases[0], 0]).compute()
-        B = IntCode(input_list.copy(), [phases[1], A]).compute()
-        C = IntCode(input_list.copy(), [phases[2], B]).compute()
-        D = IntCode(input_list.copy(), [phases[3], C]).compute()
-        E = IntCode(input_list.copy(), [phases[4], D]).compute()
+        A = IntCode(input_list, [phases[0], 0]).compute()
+        B = IntCode(input_list, [phases[1], A]).compute()
+        C = IntCode(input_list, [phases[2], B]).compute()
+        D = IntCode(input_list, [phases[3], C]).compute()
+        E = IntCode(input_list, [phases[4], D]).compute()
         
         outputs.append(E)
         
@@ -106,7 +106,7 @@ def feedback_amplifiers():
     outputs = []
 
     for phases in itertools.permutations([5, 6, 7, 8, 9]):
-        A, B, C, D, E = [IntCode(input_list.copy(), [p]) for p in phases]
+        A, B, C, D, E = [IntCode(input_list, [p]) for p in phases]
         e = 0
         
         while(True):
