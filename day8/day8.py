@@ -3,7 +3,7 @@ def make_layers(image, width, height):
     layers = []
 
     for i in range(0, len(image), width):
-        layers.append(image[i : i +width])
+        layers.append(image[i : i + width])
 
     dict_idx = 1
     for i in range(len(layers)):
