@@ -53,7 +53,7 @@ def best_asteroid(angle):
     angles = None
     for x, y in coords:
         if angle:
-            asteroids, angles = num_asteroids_angle(x, y, coords)[0]
+            asteroids, angles = num_asteroids_angle(x, y, coords)
         else:
             asteroids = num_asteroids_slope(x, y, coords)
         if asteroids > max_asteroids:
@@ -62,7 +62,7 @@ def best_asteroid(angle):
             best_y = y
     return max_asteroids, best_x, best_y, angles
 
-max_asteroids, best_x, best_y, angles = best_asteroid(False)
+max_asteroids, best_x, best_y, angles = best_asteroid(True)
 print("Max asteroids = " + str(max_asteroids) + " at (" + str(best_x) + ", " + str(best_y) + ")")
 
 
