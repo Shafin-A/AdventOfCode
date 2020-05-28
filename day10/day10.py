@@ -9,7 +9,7 @@ for y, line in enumerate(lines):
         if char == '#':
             coords.append((x, y))
 
-def num_asteroids_slope(x, y, coords):
+def asteroids_slope(x, y, coords):
     def slope(x1, y1, x2, y2):
         # return slopes as ratios
         # slope y = mx + b
@@ -28,24 +28,21 @@ def num_asteroids_slope(x, y, coords):
             continue
         slopes.add(slope(x1, y1, x, y))
         
-    return len(slopes)
+    return slopes
 
-def num_asteroids_angle(x, y, coords):
+def asteroids_angle(x, y, coords):
     def angle(x1, y1, x2, y2):
-        angle = math.atan2(x1 - x2, y1 - y2) * 180 / math.pi
+          return (math.degrees(math.atan2(y1- y2, x1- x2)) + 90) % 360
         
-        if angle < 0:
-            return angle + 360
-        
-        return angle
-
     angles = dict()
     for x1, y1 in coords:
         angles.setdefault(angle(x1, y1, x, y), [])
         angles[angle(x1, y1, x, y)].append((x1, y1))
 
-    return len(angles), angles
+    return angles
 
+# 2 different ways to get best asteroid
+# by angle, or by slope
 def best_asteroid(angle):
     max_asteroids = 0
     best_x = -1
@@ -53,18 +50,38 @@ def best_asteroid(angle):
     angles = None
     for x, y in coords:
         if angle:
-            asteroids, angles = num_asteroids_angle(x, y, coords)
+            asteroids = len(asteroids_angle(x, y, coords))
         else:
-            asteroids = num_asteroids_slope(x, y, coords)
+            asteroids = len(asteroids_slope(x, y, coords))
         if asteroids > max_asteroids:
             max_asteroids = asteroids
             best_x = x
             best_y = y
-    return max_asteroids, best_x, best_y, angles
+    return max_asteroids, best_x, best_y
 
-max_asteroids, best_x, best_y, angles = best_asteroid(True)
+max_asteroids, best_x, best_y = best_asteroid(True) # True - by angles, False - by slope
 print("Max asteroids = " + str(max_asteroids) + " at (" + str(best_x) + ", " + str(best_y) + ")")
 
+def vaporize(best_x, best_y, coords):
+    angles = asteroids_angle(best_x, best_y, coords)
+    sorted_coords = sorted(angles.items())
+    
+    cnt = 0
+    for (_, coord) in sorted_coords:
+        if coord == []:
+            continue
+        c = coord.pop(0)
+        cnt += 1
+        if cnt == 200:
+            return c
+
+    return None
+
+vaporized = vaporize(best_x, best_y, coords)
+if vaporized == None:
+    print("Vaporized all asteroids before 200th!")
+else:
+    print("200th vaporized asteroid at " + str(vaporized))
 
 
 
